@@ -1,0 +1,5 @@
+ORGNAME = "The Orange Toolbox"
+NAME = "AutoPak"
+VERSION = "0.1.0"
+BUILD_DATE = "Aug 30 2026"
+URL = "https://github.com/The-Orange-Toolbox/AutoPak"

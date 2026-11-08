@@ -1,0 +1,7 @@
+git+https://github.com/The-Orange-Toolbox/TOT-common
+valvebsp>=1.3.14  # lumps 0/40/43 + static prop dict; entity lump comes pre-parsed
+valvemdl          # cdmaterials, texture names, skins, $includemodel
+valvepcf          # particle -> material/model references
+# Build/test only: validates extensions/AutoPak.vgct.json against the
+# VGCT schema. Not imported by the tool itself.
+jsonschema>=4

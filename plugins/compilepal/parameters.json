@@ -1,0 +1,66 @@
+[
+    {
+        "Name": "Output",
+        "Parameter": " --output",
+        "Description": "where to write the bspzip file list. defaults to <map>_files.txt beside the bsp.",
+        "Value": "",
+        "CanHaveValue": true,
+        "Warning": ""
+    },
+    {
+        "Name": "SourceDirectory",
+        "Parameter": " --source-directory",
+        "Description": "an extra loose content root to search, on top of the ones gameinfo.txt names.",
+        "Value": "",
+        "CanHaveValue": true,
+        "Warning": ""
+    },
+    {
+        "Name": "Strict",
+        "Parameter": " --strict",
+        "Description": "exit with an error if any referenced asset could not be found.",
+        "Value": "",
+        "CanHaveValue": false,
+        "Warning": "a map referencing base-game content under an unusual name can trip this."
+    },
+    {
+        "Name": "NoVpk",
+        "Parameter": " --no-vpk",
+        "Description": "do not read the game's vpks; everything not found loose is reported missing.",
+        "Value": "",
+        "CanHaveValue": false,
+        "Warning": ""
+    },
+    {
+        "Name": "RenameNav",
+        "Parameter": " --rename-nav",
+        "Description": "list the navigation mesh as maps/embed.nav.",
+        "Value": "",
+        "CanHaveValue": false,
+        "Warning": ""
+    },
+    {
+        "Name": "RenameParticleManifest",
+        "Parameter": " --rename-particle-manifest",
+        "Description": "list the particle manifest as particles.txt.",
+        "Value": "",
+        "CanHaveValue": false,
+        "Warning": ""
+    },
+    {
+        "Name": "Report",
+        "Parameter": " --report",
+        "Description": "how much to print: summary, detailed, or json.",
+        "Value": "",
+        "CanHaveValue": true,
+        "Warning": ""
+    },
+    {
+        "Name": "Verbose",
+        "Parameter": " --verbose",
+        "Description": "print every asset as it resolves.",
+        "Value": "",
+        "CanHaveValue": false,
+        "Warning": ""
+    }
+]

@@ -1,0 +1,11 @@
+{
+  "Name": "AUTOPAK",
+  "Path": "Parameters\\AUTOPAK\\AutoPak.exe",
+  "Order": 9.5,
+  "DoRun": true,
+  "ReadOutput": true,
+  "Description": "Lists every custom asset the map depends on, for bspzip -addlist",
+  "Warning": "Writes a file list only; it does not pack. Run bspzip yourself, or use CompilePal's own PACK step instead.",
+  "PresetDefault": false,
+  "BasisString": "$bsp$ --game $game$"
+}
