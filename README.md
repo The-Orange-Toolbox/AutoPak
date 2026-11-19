@@ -36,9 +36,32 @@ It also decides what to pack differently from other packers:
 VPKs are only ever opened to answer "does this exist?". Their contents are never
 extracted and never packed.
 
-## Usage
+## Installation
 
-Run `AutoPak --help` for the full list.
+### Using with CompilePal
+AutoPak is packaged as ready to be used in CompilePal. Follow these quick steps to install it:
+- Copy the AutoPak folder into "Compile Pal 02x.xx/Parameters"
+- Restart CompilePal.
+- From the CompilePal UI, use the "Add..." button to add AutoPak to your list of executables.
+- Tick the checkmark to have it run on your next compile.
+
+AutoPak only writes the file list. Follow it with a step that runs `bspzip -addlist`, or
+use CompilePal's own PACK step instead; there is no point running both.
+
+### Using with Hammer (expert compile)
+The executable can be used standalone without any of the other files it is bundled with. Follow these quick steps to add it to your Hammer compile:
+- Copy the AutoPak.exe from AutoPak/ to your bin folder (e.g. steamapps/common/Team Fortress 2/bin, or any prefered folder).
+- In Hammer's expert compile window, use the "New" button to add a new command.
+- For the command, click the "Cmds" button, select "executable", select the location of the AutoPak.exe.
+- For the parameters, add `$bspdir\$file.bsp --game $gamedir` into the text field.
+- Add a second command for `$exedir\bspzip.exe` with the parameters `-addlist $bspdir\$file.bsp $bspdir\$file_files.txt $bspdir\$file.bsp -game $gamedir`.
+- Use the "Move Up"/"Move Down" buttons to order both commands after the copy command (and after AutoNav/AutoCube, if you use them, so the nav mesh and cubemaps are already there).
+- Hit "Go!" and compile away!
+
+### Using with command line
+Run the executable with `AutoPak --help` for complete information about its usage.
+
+## Usage
 
 ```
 AutoPak <map.bsp> [options]
@@ -48,13 +71,13 @@ AutoPak <map.bsp> [options]
 |---|---|
 | `map.bsp` | The compiled map to scan. Never modified. |
 | `-g`, `--game DIR` | Mod folder holding `gameinfo.txt`. Default: walk up from the BSP. |
-| `-s`, `--source-directory DIR` | An extra loose content root. Repeatable. |
+| `--source-directory DIR` | An extra loose content root. Repeatable. |
 | `--profile NAME` | The BSP profile to read with (`TF2`, `P2`, `L4D2`…). Default: autodetect. |
 | `--no-vpk` | Do not read the VPKs. Anything not loose is then reported missing. |
 | `-i`, `--include PATH` | Force-pack a file nothing references. Repeatable. |
 | `--include-dir DIR` | Force-pack a directory, recursively. Repeatable. |
 | `--include-file-list FILE` | Force-pack the entries in a list. Same format AutoPak writes. |
-| `-e`, `--exclude PATH` | Never pack this file. Repeatable. |
+| `--exclude PATH` | Never pack this file. Repeatable. |
 | `--exclude-dir DIR` | Never pack anything under this directory. Repeatable. |
 | `--exclude-vpk VPK` | Never pack anything this VPK already contains. Repeatable. |
 | `--no-swvtx` | Skip the `.sw.vtx` software-rendering meshes. |
@@ -65,7 +88,7 @@ AutoPak <map.bsp> [options]
 | `--stdout` | Write the list to stdout instead of a file. |
 | `--report {summary,detailed,json}` | How much to print. Default `summary`. |
 | `--strict` | Exit with an error if anything is missing. |
-| `-v`, `--verbose` | Print every asset as it resolves. |
+| `--verbose` | Print every asset as it resolves. |
 | `-q`, `--quiet` | Print only the missing-file report and errors. |
 
 Then pack, with the game's own `bspzip`:
@@ -75,20 +98,7 @@ AutoPak "…\tf\maps\mymap.bsp"
 bspzip -addlist "…\tf\maps\mymap.bsp" mymap_files.txt "…\tf\maps\mymap.bsp"
 ```
 
-`bspzip` needs `VPROJECT` set to your mod folder.
-
-### Using with Hammer (expert compile)
-
-- Copy `AutoPak.exe` into your `bin` folder (e.g. `steamapps/common/Team Fortress 2/bin`).
-- In Hammer's expert compile window, use "New" to add a command.
-- For the command, click "Cmds", select "executable", and pick `AutoPak.exe`.
-- For the parameters, use `$bsp$ --game $gamedir$`.
-- Add a second command for `bspzip` with `-addlist $bsp$ $path$$file$_files.txt $bsp$`.
-- Order both after the copy command.
-
-### Using with command line
-
-`AutoPak --help` gives complete information about its usage.
+`bspzip` needs to know your mod folder: pass `-game <mod folder>` or set `VPROJECT`.
 
 ## Output
 
@@ -146,8 +156,6 @@ recognises these and counts them separately rather than reporting them as missin
 does not read `game_sounds` manifests to find the `.wav` files behind them. Pack those
 with `--include` if you need them.
 
-**CS:GO and CS2 are out of scope.**
-
 **Compressed (LZMA) BSPs are not supported.** Decompress first with `bspzip -repack`.
 
 <!--- start txt omit -->
@@ -176,6 +184,17 @@ Tests:
 
 Everything but the end-to-end check runs with no game installed.
 
+## Documentation site
+
+The documentation website is generated from this README, the argument parser,
+and the CompilePal and VGCT definitions, and is published to GitHub Pages on
+every push to `master`. To preview it locally:
+
+```bat
+.venv\Scripts\pip install -r docs\requirements.txt
+.venv\Scripts\python docs\tot_docs.py serve
+```
+
 ## Project layout
 
 ```
@@ -194,9 +213,10 @@ src/keys.py           the asset keyword tables
 src/paths.py          path normalisation
 src/formats/          one minimal parser per file format
 tests/                the above, plus the CLI and the sidecar
-extensions/           VGCT tool definition, and the schema it is
+plugins/vgct/         VGCT tool definition, and the schema it is
                       checked against at build time and in the tests
 plugins/compilepal/   CompilePal plugin configuration
+docs/                 documentation site generator (shared by every tool)
 ```
 <!--- end txt omit -->
 

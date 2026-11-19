@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.join(HERE, os.pardir, 'src'))
 
 from _constants import NAME, VERSION  # noqa: E402
 
-EXTENSIONS = os.path.join(HERE, os.pardir, 'extensions')
+EXTENSIONS = os.path.join(HERE, os.pardir, 'plugins', 'vgct')
 SIDECAR = os.path.join(EXTENSIONS, NAME + '.vgct.json')
 SCHEMA = os.path.join(EXTENSIONS, 'vgct.schema.json')
 
@@ -75,6 +75,11 @@ class SidecarTestCase(unittest.TestCase):
             if flag is not None:
                 self.assertTrue(flag.startswith('--'),
                                 'not a long flag: ' + flag)
+
+    def testEveryArgumentIsPromotable(self):
+        for argument in self.definition['arguments']:
+            self.assertIs(argument.get('promotable'), True,
+                          'not promotable: ' + argument['id'])
 
 
 if __name__ == '__main__':

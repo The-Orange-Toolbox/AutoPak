@@ -22,7 +22,6 @@ from pack import PackError, pack  # NOQA: E402
 
 def build_parser():
     p = argparse.ArgumentParser(
-        prog=NAME.lower(),
         description='Find every custom asset a compiled BSP depends on and '
                     'write the file list that bspzip -addlist consumes.',
         epilog='AutoPak never modifies the map and never runs bspzip. An '
@@ -38,7 +37,7 @@ def build_parser():
                          help='The mod folder holding gameinfo.txt. Its '
                               'search paths decide what counts as custom '
                               'content. Default: walk up from the BSP.')
-    content.add_argument('-s', '--source-directory', metavar='DIR',
+    content.add_argument('--source-directory', metavar='DIR',
                          action='append', dest='source_dirs',
                          help='An extra loose content root to search, on top '
                               'of the ones gameinfo.txt names. Repeatable.')
@@ -65,7 +64,7 @@ def build_parser():
                                 'alternating internal/external format that '
                                 'AutoPak writes, so its own output can be '
                                 'fed back in. Repeatable.')
-    selection.add_argument('-e', '--exclude', metavar='PATH',
+    selection.add_argument('--exclude', metavar='PATH',
                            action='append', dest='excludes',
                            help='Never pack this file. Repeatable.')
     selection.add_argument('--exclude-dir', metavar='DIR',
@@ -105,7 +104,7 @@ def build_parser():
                      help='Exit with an error if any referenced asset could '
                           'not be found.')
 
-    p.add_argument('-v', '--verbose', action='store_true',
+    p.add_argument('--verbose', action='store_true',
                    help='Print every asset as it resolves.')
     p.add_argument('-q', '--quiet', action='store_true',
                    help='Print only the missing-file report and errors.')
@@ -195,7 +194,7 @@ def main():
             )
         except PackError as error:
             failure = str(error)
-            stdout('autopak: ' + failure)
+            stdout(NAME + ': ' + failure)
 
     if failure is not None:
         raise SystemExit(1)

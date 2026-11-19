@@ -119,7 +119,7 @@ class CommandLineTestCase(unittest.TestCase):
         self.assertIn('not a .bsp', result.stderr)
 
     def testVerboseAndQuietTogetherAreRejected(self):
-        result = self.run_autopak(self.bsp, '-v', '-q')
+        result = self.run_autopak(self.bsp, '--verbose', '-q')
 
         self.assertEqual(result.returncode, 2)
 
@@ -161,7 +161,7 @@ class CommandLineTestCase(unittest.TestCase):
             '--output', os.path.join(self.directory, 'list.txt'),
             '--report', 'detailed',
             '--strict',
-            '-v')
+            '--verbose')
 
         self.assertEqual(result.returncode, 0, result.stderr)
 

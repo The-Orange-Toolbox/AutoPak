@@ -1,12 +1,14 @@
 {
   "schemaVersion": "2.0.0",
   "id": "autopak",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "name": "AutoPak",
   "description": "Finds every custom asset a compiled BSP depends on and writes the file list bspzip -addlist consumes. Reports anything it cannot find. Does not modify the map and does not run bspzip.",
   "category": "Post-Compile",
   "kind": "exe",
-  "executable": { "value": "AutoPak.exe" },
+  "executable": {
+    "value": "AutoPak.exe"
+  },
   "inputs": [
     {
       "id": "bsp",
@@ -20,8 +22,15 @@
       "id": "filelist",
       "type": "File",
       "description": "The bspzip -addlist file: alternating internal and external paths, one pair per packed asset. Feed it to a bspzip node, or edit it first to append your own entries.",
-      "harvest": { "strategy": "template", "value": "${arg.output}" },
-      "passthrough": { "input": "bsp", "suffix": "_files", "ext": ".txt" }
+      "harvest": {
+        "strategy": "template",
+        "value": "${arg.output}"
+      },
+      "passthrough": {
+        "input": "bsp",
+        "suffix": "_files",
+        "ext": ".txt"
+      }
     }
   ],
   "arguments": [
@@ -32,8 +41,10 @@
       "pathKind": "file",
       "positional": true,
       "required": true,
-      "promotable": false,
-      "defaultBinding": { "source": "port" },
+      "promotable": true,
+      "defaultBinding": {
+        "source": "port"
+      },
       "description": "The compiled map to scan."
     },
     {
@@ -42,8 +53,14 @@
       "type": "path",
       "pathKind": "dir",
       "flag": "--game",
-      "promotable": false,
-      "defaultBinding": { "source": "dynamic", "value": { "kind": "value", "value": "${game.gameDir}" } },
+      "promotable": true,
+      "defaultBinding": {
+        "source": "dynamic",
+        "value": {
+          "kind": "value",
+          "value": "${game.gameDir}"
+        }
+      },
       "description": "The mod folder holding gameinfo.txt. Its search paths decide what counts as custom content and what is the base game's."
     },
     {
@@ -52,7 +69,7 @@
       "type": "path",
       "pathKind": "file",
       "flag": "--output",
-      "promotable": false,
+      "promotable": true,
       "description": "Where to write the bspzip file list. Defaults to <map>_files.txt beside the BSP."
     },
     {
@@ -62,7 +79,8 @@
       "pathKind": "dir",
       "flag": "--source-directory",
       "variadic": true,
-      "description": "An additional loose content root to search, on top of the ones gameinfo.txt names."
+      "description": "An additional loose content root to search, on top of the ones gameinfo.txt names.",
+      "promotable": true
     },
     {
       "id": "strict",
@@ -70,44 +88,54 @@
       "type": "bool",
       "flag": "--strict",
       "description": "Exit with an error if any referenced asset could not be found. Use this to stop a compile before it produces a map with missing content.",
-      "warning": "A map that references base-game content under an unusual name can trip this. Check the reported list before enabling it in an automated chain."
+      "warning": "A map that references base-game content under an unusual name can trip this. Check the reported list before enabling it in an automated chain.",
+      "promotable": true
     },
     {
       "id": "no-vpk",
       "name": "Skip VPK Check",
       "type": "bool",
       "flag": "--no-vpk",
-      "description": "Do not read the game's VPKs. Everything not found as a loose file is then reported missing, instead of being recognised as base-game content."
+      "description": "Do not read the game's VPKs. Everything not found as a loose file is then reported missing, instead of being recognised as base-game content.",
+      "promotable": true
     },
     {
       "id": "rename-nav",
       "name": "Rename Nav",
       "type": "bool",
       "flag": "--rename-nav",
-      "description": "List the navigation mesh as maps/embed.nav so it loads regardless of the map's filename."
+      "description": "List the navigation mesh as maps/embed.nav so it loads regardless of the map's filename.",
+      "promotable": true
     },
     {
       "id": "rename-particle-manifest",
       "name": "Rename Particle Manifest",
       "type": "bool",
       "flag": "--rename-particle-manifest",
-      "description": "List the particle manifest as particles.txt."
+      "description": "List the particle manifest as particles.txt.",
+      "promotable": true
     },
     {
       "id": "report",
       "name": "Report Detail",
       "type": "enum",
       "flag": "--report",
-      "enum": ["summary", "detailed", "json"],
+      "enum": [
+        "summary",
+        "detailed",
+        "json"
+      ],
       "default": "summary",
-      "description": "How much to print: counts only, a full per-asset listing, or one JSON object for tooling."
+      "description": "How much to print: counts only, a full per-asset listing, or one JSON object for tooling.",
+      "promotable": true
     },
     {
       "id": "verbose",
       "name": "Verbose",
       "type": "bool",
       "flag": "--verbose",
-      "description": "Print every asset as it resolves."
+      "description": "Print every asset as it resolves.",
+      "promotable": true
     }
   ]
 }
